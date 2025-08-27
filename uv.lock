@@ -200,7 +200,9 @@ source = { virtual = "." }
 dependencies = [
     { name = "alembic" },
     { name = "asyncpg" },
+    { name = "email-validator" },
     { name = "fastapi" },
+    { name = "phonenumbers" },
     { name = "pydantic", extra = ["email"] },
     { name = "pydantic-settings" },
     { name = "python-multipart" },
@@ -212,12 +214,23 @@ dependencies = [
 requires-dist = [
     { name = "alembic", specifier = ">=1.16.4" },
     { name = "asyncpg", specifier = ">=0.30.0" },
+    { name = "email-validator", specifier = ">=2.3.0" },
     { name = "fastapi", specifier = ">=0.116.1" },
+    { name = "phonenumbers", specifier = ">=9.0.12" },
     { name = "pydantic", extras = ["email"], specifier = ">=2.11.7" },
     { name = "pydantic-settings", specifier = ">=2.10.1" },
     { name = "python-multipart", specifier = ">=0.0.20" },
     { name = "sqlalchemy", specifier = ">=2.0.43" },
     { name = "uvicorn", specifier = ">=0.35.0" },
+]
+
+[[package]]
+name = "phonenumbers"
+version = "9.0.12"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/9f/07/f76fb718ad78d0cd0926ef750b58928e5b13f0f94cc6c516d310f11228fb/phonenumbers-9.0.12.tar.gz", hash = "sha256:ccadff6b949494bd606836d8c9678bee5b55cb1cbad1e98bf7adae108e6fd0be", size = 2297813, upload-time = "2025-08-15T11:29:03.489Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/7c/f1/e94b3504078d67d69d024ffb1798c31df9ddfb09ec2ec1680f3e7776414a/phonenumbers-9.0.12-py2.py3-none-any.whl", hash = "sha256:900633afc3e12191458d710262df5efc117838bd1e2e613b64fa254a86bb20a1", size = 2583620, upload-time = "2025-08-15T11:28:59.161Z" },
 ]
 
 [[package]]
