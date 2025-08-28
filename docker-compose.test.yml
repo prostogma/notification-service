@@ -1,0 +1,12 @@
+services:
+  test_postgres:
+    image: postgres:latest
+    container_name: test_postgres
+    env_file:
+      - .test.env
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "5434:5432"
