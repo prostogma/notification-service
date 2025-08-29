@@ -15,9 +15,9 @@ async def async_client():
         yield async_client
         
 @pytest.fixture
-async def async_session():
-    async with async_session_maker() as async_session:
-        yield async_session
+async def session():
+    async with async_session_maker() as session:
+        yield session
         
 @pytest.fixture(scope="session", autouse=True)
 async def setup_db():
