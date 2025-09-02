@@ -63,12 +63,11 @@ async def test_create_notification_handler(
         assert data["recipient"] == request_data["recipient"]
         assert data["subject"] == request_data["subject"]
         
-async def test_get_notifications_handler(async_client: AsyncClient):
+async def test_get_notifications_handler(async_client: AsyncClient, notification_in_db):
     query_params = {
         "limit": 1000,
-        "offset": 20,
+        "offset": 0,
         "type": TypeNotificationEnum.EMAIL.value,
-        "status": StatusNotificationEnum.PENDING.value
     }
     response = await async_client.get("/notifications/", params=query_params)
     assert response.status_code == 200

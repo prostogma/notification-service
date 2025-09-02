@@ -5,6 +5,7 @@ from email_validator import validate_email, EmailNotValidError
 from pydantic import BaseModel, ConfigDict, EmailStr, Field, model_validator
 
 from core.database.enums import StatusNotificationEnum, TypeNotificationEnum
+from core.schemas.attachments import AttachmentScheme
 
 class CreateNotificationScheme(BaseModel):
     type: TypeNotificationEnum
@@ -37,6 +38,7 @@ class NotificationScheme(BaseModel):
     status: StatusNotificationEnum
     message_text: str | None = None
     message_html: str | None = None
+    attachments: list[AttachmentScheme] | None = None
     
     model_config = ConfigDict(
         from_attributes=True,
