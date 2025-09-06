@@ -5,6 +5,7 @@ from fastapi import APIRouter, Body, Query
 from core.crud.notifications import create_notification, get_notification, get_notifications
 from core.database.db_helper import session_DB
 from core.schemas.notifications import CreateNotificationScheme, NotificationFilterScheme, NotificationScheme
+from core.tasks.email_tasks import send_email_task
 
 
 router = APIRouter(prefix="/notifications", tags=["Уведомления 📢"])
@@ -15,6 +16,7 @@ async def create_notification_handler(
     notification_data: Annotated[CreateNotificationScheme, Body()]
 ):
     notification = await create_notification(session, notification_data)
+    send_email_task.delay(notification_data.recipient, notification_data.subject, notification_data.message_text)
     return notification
 
 @router.get("/", response_model=list[NotificationScheme])
