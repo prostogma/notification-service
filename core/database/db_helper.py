@@ -9,10 +9,10 @@ if settings.MODE == "TEST":
     engine = create_async_engine(settings.DATABASE_URL, poolclass=NullPool)
 else:
     engine = create_async_engine(settings.DATABASE_URL)
-    
+
 async_session_maker = async_sessionmaker(engine)
 
-async def create_session():
+async def create_async_session():
     async with async_session_maker() as session:
         try:
             yield session
@@ -21,5 +21,5 @@ async def create_session():
             print(f"Ошибка при работе с сессией - {e}")
             raise
     
-session_DB = Annotated[AsyncSession, Depends(create_session)]
+session_DB = Annotated[AsyncSession, Depends(create_async_session)]
             

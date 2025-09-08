@@ -2,32 +2,49 @@ import asyncio
 import logging
 
 from datetime import datetime, timezone
+from uuid import UUID
 
 from core.celery_app import app
-from core.utils.send_email import send_email
+from core.crud.notifications import get_notification
+from core.database.enums import StatusNotificationEnum
+from core.database.db_helper import async_session_maker
+from core.utils.send_email import update_notification_status, send_email
 
 
 logger = logging.getLogger(__name__)
 
+loop = asyncio.get_event_loop()
+
 
 @app.task(bind=True, max_retries=3, default_retry_delay=30)
-def send_email_task(self, email: str, subject: str, message: str):
+def send_email_task(self, notification_id: UUID):
+    result = loop.run_until_complete(_send_email_task(self, notification_id))
+    return result
+    
+async def _send_email_task(self, notification_id: UUID):
+    notification = await get_notification(async_session_maker(), notification_id)
     try:
-        asyncio.run(asyncio.sleep(5))
-        asyncio.run(send_email(email, subject, message))
+        await update_notification_status(notification.id, StatusNotificationEnum.PROCESSING)
+        await asyncio.sleep(5)
+        await send_email(notification)
+        await update_notification_status(notification.id, StatusNotificationEnum.SENT)
         
         result = {
             "status": "sent",
-            "email": email,
-            "subject": subject,
-            "message": message,
+            "email": notification.recipient,
+            "subject": notification.subject,
             "sent_at": datetime.now(timezone.utc),
             "task_id": self.request.id
         }
         
-        logger.info(f"Письмо успешно отправленно на {email}")
+        logger.info(f"Письмо успешно отправленно на {notification.recipient}")
         return result
     except Exception as exc:
-        logger.exception(f"Ошибка при отправке письма на {email}: {str(exc)}")
+        if self.request.retries >= self.max_retries: 
+            await update_notification_status(notification.id, StatusNotificationEnum.FAILED)
+            
+        logger.exception(f"Ошибка при отправке письма на {notification.recipient}: {str(exc)}")
         raise self.retry(exc=exc)
+    
+
 

@@ -6,7 +6,7 @@ from sqlalchemy import select
 from core.crud.attachments import create_attachment
 from core.database.models import Notification
 from core.schemas.notifications import CreateNotificationScheme, NotificationFilterScheme
-from core.utils.validate_notification import validate_notification_data
+from core.utils.notification_utils import validate_notification_data
 
 
 async def create_notification(

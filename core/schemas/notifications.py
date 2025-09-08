@@ -12,7 +12,7 @@ class CreateNotificationScheme(BaseModel):
     recipient: str
     subject: str = Field(min_length=3, max_length=100)
     message_text: str | None = None
-    message_html: str | None = None
+    message_html_b64: str | None = None
     attachments: list[str] | None = None
     
     @model_validator(mode="after")

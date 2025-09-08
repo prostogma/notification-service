@@ -26,3 +26,4 @@ async def validate_notification_data(notification_data: CreateNotificationScheme
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="SMS должно содержать текст сообщения!"
             )
+            

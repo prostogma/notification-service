@@ -19,7 +19,7 @@ class Notification(Base):
     recipient: Mapped[str]
     subject: Mapped[str] = mapped_column(String(100))
     message_text: Mapped[str] = mapped_column(nullable=True)
-    message_html: Mapped[str | None] = mapped_column(nullable=True)
+    message_html_b64: Mapped[str | None] = mapped_column(nullable=True)
     status: Mapped[StatusNotificationEnum] = mapped_column(default=StatusNotificationEnum.PENDING)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
