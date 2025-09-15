@@ -37,7 +37,7 @@ class NotificationScheme(BaseModel):
     subject: str
     status: StatusNotificationEnum
     message_text: str | None = None
-    message_html: str | None = None
+    message_html_b64: str | None = None
     attachments: list[AttachmentScheme] | None = None
     
     model_config = ConfigDict(

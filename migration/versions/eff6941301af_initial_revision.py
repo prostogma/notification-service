@@ -1,8 +1,8 @@
-"""initial revision
+"""Initial revision
 
-Revision ID: f766a9c380ff
+Revision ID: eff6941301af
 Revises: 
-Create Date: 2025-08-27 10:06:20.622808
+Create Date: 2025-09-15 08:53:12.887402
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'f766a9c380ff'
+revision: str = 'eff6941301af'
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -24,9 +24,9 @@ def upgrade() -> None:
     op.create_table('notifications',
     sa.Column('type', sa.Enum('EMAIL', 'SMS', name='typenotificationenum'), nullable=False),
     sa.Column('recipient', sa.String(), nullable=False),
-    sa.Column('subject', sa.String(), nullable=False),
-    sa.Column('message_text', sa.String(), nullable=False),
-    sa.Column('message_html', sa.String(), nullable=True),
+    sa.Column('subject', sa.String(length=100), nullable=False),
+    sa.Column('message_text', sa.String(), nullable=True),
+    sa.Column('message_html_b64', sa.String(), nullable=True),
     sa.Column('status', sa.Enum('PENDING', 'PROCESSING', 'SENT', 'FAILED', name='statusnotificationenum'), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),

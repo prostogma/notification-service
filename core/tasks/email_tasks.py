@@ -25,7 +25,6 @@ async def _send_email_task(self, notification_id: UUID):
     notification = await get_notification(async_session_maker(), notification_id)
     try:
         await update_notification_status(notification.id, StatusNotificationEnum.PROCESSING)
-        await asyncio.sleep(5)
         await send_email(notification)
         await update_notification_status(notification.id, StatusNotificationEnum.SENT)
         

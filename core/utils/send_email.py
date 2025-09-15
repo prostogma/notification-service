@@ -1,3 +1,4 @@
+import base64
 from uuid import UUID
 import aiosmtplib
 from email.message import EmailMessage
@@ -20,9 +21,11 @@ async def send_email(notification: Notification):
     # добавляем текстовую версию
     message.set_content(notification.message_text)
     
-    if notification.message_html:
+    if notification.message_html_b64:
         # добавляем HTML версию
-        message.add_alternative(notification.message_html, subtype="html")
+        html_bytes = base64.b64decode(notification.message_html_b64)
+        html = html_bytes.decode(encoding="utf-8")
+        message.add_alternative(html, subtype="html")
     
     await aiosmtplib.send(
         message,

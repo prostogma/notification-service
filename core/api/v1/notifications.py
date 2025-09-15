@@ -17,7 +17,8 @@ async def create_notification_handler(
     notification_data: Annotated[CreateNotificationScheme, Body()]
 ):
     notification = await create_notification(session, notification_data)
-    if notification_data.type == TypeNotificationEnum.EMAIL:
+    print("HELLO CREATE NOTIFICATION!!!")
+    if notification.type == TypeNotificationEnum.EMAIL:
         send_email_task.delay(notification.id)
     return notification
 
